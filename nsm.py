@@ -16,14 +16,14 @@ requests.packages.urllib3.disable_warnings()
 
 def b64(user, password):
 	authstring = user + ':' + password
+	authstring=authstring.encode('utf-8')
 	return base64.b64encode(authstring)
 
 def session(nsm, user, password):
 	authheader = {
 					 'Accept': 'application/vnd.nsm.v1.0+json',
 					 'Content-Type': 'application/json',
-					 'NSM-SDK-API': '%s'
-					  % b64(user, password)
+					 'NSM-SDK-API': b64(user, password)
 					  }
 
 	r = requests.get('https://%s/sdkapi/session' % nsm, headers = authheader, verify=False)
@@ -37,8 +37,7 @@ def session(nsm, user, password):
 	sessionheader =  {
 						 'Accept': 'application/vnd.nsm.v1.0+json',
 						 'Content-Type': 'application/json',
-						 'NSM-SDK-API': '%s'
-						 % b64(res['session'], res['userId'])
+						 'NSM-SDK-API': b64(res['session'], res['userId'])
 						 }
 	return sessionheader
 
