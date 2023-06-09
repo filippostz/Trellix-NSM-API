@@ -111,16 +111,16 @@ if __name__ == "__main__":
 
 	connect = session(nsm, user, pw)
 
-	#sensors = get_sensors(nsm, connect)
-	#print('Available Sensors with ID are posted below')
-	#print('-------------------')
-	#for i in sensors['SensorDescriptor']:
-	#	model = i['model']
-	#	ip = i['sensorIPAddress']
-	#	sensorid = i['sensorId']
-	#	print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (i['model'], i['sensorIPAddress'],  str(i['sensorId'])))
-	#	print('-------------------')
+	sensors = get_sensors(nsm, connect)
+	print('Available Sensors with ID are posted below')
+	print('-------------------')
+	for i in sensors['SensorDescriptor']:
+		model = i['model']
+		ip = i['sensorIPAddress']
+		sensorid = i['sensorId']
+		print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (i['model'], i['sensorIPAddress'],  str(i['sensorId'])))
+		print('-------------------')
 
-	get = get_qhosts(nsm, sensor_id, connect)
-	quarantine = post_qhost(ip_address, sensor_id, duration, connect)
+	#get = get_qhosts(nsm, sensor_id, connect)
+	#quarantine = post_qhost(ip_address, sensor_id, duration, connect)
 	disconnect = disconnect(nsm, connect)
