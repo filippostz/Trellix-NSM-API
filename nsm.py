@@ -7,7 +7,7 @@ import json
 
 nsm = 'ip' #Enter the NSM IP address
 sensor_id = 'id' #Enter the SensorID
-duration = '60'	#Enter the duration time to quarantine a system
+duration = 60	#Enter the duration time to quarantine a system
 user = 'user' #Enter the username
 pw = 'password' #Enter the password
 ip_address = sys.argv[1]
@@ -88,7 +88,7 @@ def post_qhost(ip_address, sensor_id, duration, sessionheader):
 		pass
 
 	if sensor_id and is_sensorup(sensor_id, sessionheader):
-		r = requests.post('https://%s/sdkapi/sensor/1001/action/quarantinehost' % nsm, headers = sessionheader, data = json.dumps(payload), verify=False)
+		r = requests.post('https://%s/sdkapi/sensor/%s/action/quarantinehost' % (nsm, sensor_id), headers = sessionheader, data = json.dumps(payload), verify=False)
 		res = r.json()
 		if r.status_code == 200:
 			print('Added the IP %s to the quarantine successfully' % ip_address)
