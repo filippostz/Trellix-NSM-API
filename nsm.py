@@ -121,6 +121,6 @@ if __name__ == "__main__":
 		print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (i['model'], i['sensorIPAddress'],  str(i['sensorId'])))
 		print('-------------------')
 
-	#get = get_qhosts(nsm, sensor_id, connect)
-	#quarantine = post_qhost(ip_address, sensor_id, duration, connect)
+	        #get = get_qhosts(nsm, sensor_id, connect)
+	        post_qhost(ip_address, sensor_id, duration, connect)
 	disconnect = disconnect(nsm, connect)
