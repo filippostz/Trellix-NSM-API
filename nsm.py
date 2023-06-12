@@ -122,5 +122,5 @@ if __name__ == "__main__":
 		print('-------------------')
 
 	        #get = get_qhosts(nsm, sensor_id, connect)
-	        post_qhost(ip_address, sensor_id, duration, connect)
+	        post_qhost(ip_address, sensorid, duration, connect)
 	disconnect = disconnect(nsm, connect)
