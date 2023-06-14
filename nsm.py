@@ -103,7 +103,7 @@ def post_qhost(ip_address, sensor_id, duration, sessionheader):
             print('Something went wrong during the quarantine update')
     elif is_sensorup(sensor_id, sessionheader) == False:
         print('Sensor %s down, does not exit or model not supported' % sensor_id)
-
+        res=0
     return res
 
 
