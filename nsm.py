@@ -120,5 +120,5 @@ if __name__ == "__main__":
 		sensorid = i['sensorId']
 		print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (i['model'], i['sensorIPAddress'],  str(i['sensorId'])))
 		print('-------------------')
-                post_qhost(ip_address, sensorid, duration, connect)
+        post_qhost(ip_address, sensorid, duration, connect)
 	disconnect = disconnect(nsm, connect)
