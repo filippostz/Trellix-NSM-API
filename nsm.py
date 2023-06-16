@@ -4,22 +4,37 @@ import requests
 import sys
 import base64
 import json
+import os
+import ipaddress
 
-nsm = 'ip'  # Enter the NSM IP address
-sensor_id = 'id'  # Enter the SensorID
-duration = 60  # Enter the duration time to quarantine a system
-user = 'user'  # Enter the username
-pw = 'password'  # Enter the password
-ip_address = sys.argv[1]
+nsm = ''  # Enter the NSM IP address
+duration = 15  # Enter the duration time to quarantine a system
+user = ''  # Enter the username
+pw = ''  # Enter the password
 
 requests.packages.urllib3.disable_warnings()
 
+def readFile(sourceFilePath):
+    if os.path.isfile(sourceFilePath) and os.access(sourceFilePath, os.R_OK):
+        with open(sourceFilePath) as file_in:
+            lines = []
+            for line in file_in:
+                lines.append(line)
+            return lines
+    else:
+        return False
 
 def b64(user, password):
     authstring = user + ':' + password
     authstring = authstring.encode('utf-8')
     return base64.b64encode(authstring)
 
+def ip_address_check(ip):
+   try:
+       ipaddress.ip_address(ip)
+       return True
+   except:
+       return False
 
 def session(nsm, user, password):
     authheader = {
@@ -27,8 +42,11 @@ def session(nsm, user, password):
         'Content-Type': 'application/json',
         'NSM-SDK-API': b64(user, password)
     }
-
-    r = requests.get('https://%s/sdkapi/session' % nsm, headers=authheader, verify=False)
+    try:
+        r = requests.get('https://%s/sdkapi/session' % nsm, headers=authheader, timeout=10, verify=False)
+    except:
+        print("NSM not reachable!")
+        sys.exit(1)
     if r.status_code == 200:
         print('Successfully authenticated')
     else:
@@ -118,17 +136,29 @@ def disconnect(nsm, sessionheader):
 
 if __name__ == "__main__":
 
-    connect = session(nsm, user, pw)
+    ip_list = readFile(sys.argv[1])
 
-    sensors = get_sensors(nsm, connect)
-    print('Available Sensors with ID are posted below')
-    print('-------------------')
-    for i in sensors['SensorDescriptor']:
-        model = i['model']
-        ip = i['sensorIPAddress']
-        sensorid = i['sensorId']
-        print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (
-        i['model'], i['sensorIPAddress'], str(i['sensorId'])))
+    if len(sys.argv) > 1 and ip_list:
+
+        connect = session(nsm, user, pw)
+        sensors = get_sensors(nsm, connect)
+        print('Available Sensors with ID are posted below')
         print('-------------------')
-        post_qhost(ip_address, sensorid, duration, connect)
-    disconnect = disconnect(nsm, connect)
+        for i in sensors['SensorDescriptor']:
+            model = i['model']
+            ip = i['sensorIPAddress']
+            sensorid = i['sensorId']
+            print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (
+                i['model'], i['sensorIPAddress'], str(i['sensorId'])))
+            print('-------------------')
+            for ip in ip_list:
+                ip=ip.rstrip()
+                if ip_address_check(ip):
+                    post_qhost(ip, sensorid, duration, connect)
+                else:
+                    print("Invalid IP")
+        disconnect = disconnect(nsm, connect)
+
+    else:
+        print("File containing a list of IPs missing")
+
