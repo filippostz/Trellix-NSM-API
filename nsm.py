@@ -136,28 +136,29 @@ def disconnect(nsm, sessionheader):
 
 if __name__ == "__main__":
 
-    ip_list = readFile(sys.argv[1])
-
-    if len(sys.argv) > 1 and ip_list:
-
-        connect = session(nsm, user, pw)
-        sensors = get_sensors(nsm, connect)
-        print('Available Sensors with ID are posted below')
-        print('-------------------')
-        for i in sensors['SensorDescriptor']:
-            model = i['model']
-            ip = i['sensorIPAddress']
-            sensorid = i['sensorId']
-            print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (
-                i['model'], i['sensorIPAddress'], str(i['sensorId'])))
+    if len(sys.argv) > 1:
+        ip_list = readFile(sys.argv[1])
+        if ip_list:
+            connect = session(nsm, user, pw)
+            sensors = get_sensors(nsm, connect)
+            print('Available Sensors with ID are posted below')
             print('-------------------')
-            for ip in ip_list:
-                ip=ip.rstrip()
-                if ip_address_check(ip):
-                    post_qhost(ip, sensorid, duration, connect)
-                else:
-                    print("Invalid IP")
-        disconnect = disconnect(nsm, connect)
+            for i in sensors['SensorDescriptor']:
+                model = i['model']
+                ip = i['sensorIPAddress']
+                sensorid = i['sensorId']
+                print("    Model: %s   |   Sensor IP Address: %s  |   SensorID: %s " % (
+                    i['model'], i['sensorIPAddress'], str(i['sensorId'])))
+                print('-------------------')
+                for ip in ip_list:
+                    ip=ip.rstrip()
+                    if ip_address_check(ip):
+                        post_qhost(ip, sensorid, duration, connect)
+                    else:
+                        print("Invalid IP")
+            disconnect = disconnect(nsm, connect)
+        else:
+            print("File containing a list of IPs missing")
 
     else:
         print("File containing a list of IPs missing")
