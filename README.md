@@ -10,6 +10,8 @@ Available Sensors with ID are posted below
 -------------------
     Model: IPS-VM600   |   Sensor IP Address: 10.1.10.54  |   SensorID: 1012
 -------------------
-Added the IP 192.168.54.3 to the quarantine successfully
+Added the IP 192.168.76.43 to the quarantine successfully
+Added the IP 192.168.76.63 to the quarantine successfully
+Added the IP 192.168.76.23 to the quarantine successfully
 Successfully logged out
 ```
