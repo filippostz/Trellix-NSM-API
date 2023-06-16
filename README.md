@@ -4,7 +4,7 @@
 Script to quarantine suspicious IP's on Trellix NSM
 Example
 ```
-#python nsm.py 192.168.54.3
+#python nsm.py ipList.txt
 
 Available Sensors with ID are posted below
 -------------------
